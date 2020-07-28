@@ -3,7 +3,11 @@
 , lispPackages
 , sbcl
 , callPackage
+, gst_all_1          ? null
+, withMediaPlayback  ? true
 }:
+
+assert withMediaPlayback -> gst_all_1 != null;
 
 let
 
@@ -29,6 +33,11 @@ stdenv.mkDerivation rec {
   ] ++ (with lispPackages; [
     prove-asdf
     trivial-features
+  ])
+  ++ (with gst_all_1; [
+    gst-plugins-base
+    gst-plugins-good
+    gst-libav
   ]);
 
   buildInputs = with lispPackages; [
